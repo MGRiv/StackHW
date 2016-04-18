@@ -1,8 +1,11 @@
 from display import *
 from matrix import *
 from draw import *
+import copy
 
-ARG_COMMANDS = [ 'line', 'scale', 'translate', 'xrotate', 'yrotate', 'zrotate', 'circle', 'bezier', 'hermite', 'sphere', 'box', 'torus']
+ARG_COMMANDS = [ 'line', 'scale', 'translate', 'xrotate', 'yrotate', 'zrotate', 'circle', 'bezier', 'hermite', 'sphere', 'box', 'torus', 'push', 'pop']
+
+stack = []
 
 def parse_file( f, points, transform, screen, color ):
 
@@ -61,7 +64,16 @@ def parse_file( f, points, transform, screen, color ):
 
         elif cmd == 'ident':
             ident( transform )
-            
+
+        elif cmd == 'push':
+            if len(stack) == 0:
+                stack.append(copy.deepcopy(transform))
+                stack.append(copy.deepcopy(transform))
+            else:
+                stack.append(copy.deepcopy(transform))
+        elif cmd == 'pop':
+            stack.pop(len(stack) - 1)
+            transform = stack[len(stack) - 1]
         elif cmd == 'apply':
             matrix_mult( transform, points )
 
