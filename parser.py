@@ -69,8 +69,10 @@ def parse_file( f, points, transform, screen, color ):
             if len(stack) == 0:
                 stack.append(copy.deepcopy(transform))
                 stack.append(copy.deepcopy(transform))
+                transform = stack[len(stack) - 1]
             else:
                 stack.append(copy.deepcopy(transform))
+                transform = stack[len(stack) - 1]
         elif cmd == 'pop':
             stack.pop(len(stack) - 1)
             transform = stack[len(stack) - 1]
